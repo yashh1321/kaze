@@ -1,5 +1,5 @@
 # ==============================================================================
-# KAZE (風) - Universal 1-Line Installer for Windows
+# KAZE - Universal 1-Line Installer for Windows
 # Run: irm https://github.com/yashh1321/kaze/releases/latest/download/install.ps1 | iex
 # ==============================================================================
 
@@ -13,7 +13,7 @@ $ErrorActionPreference = "Stop"
 
 Write-Host ""
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "            🍃 KAZE (風) Installer for Windows" -ForegroundColor Cyan
+Write-Host "            KAZE Installer for Windows" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -26,17 +26,22 @@ if (-not (Test-Path $installDir)) {
 }
 
 # 2. Determine download URL
-$downloadUrl = if ($Version -eq "latest") {
-    "https://github.com/$Repo/releases/latest/download/kaze-windows-amd64.zip"
-} else {
-    "https://github.com/$Repo/releases/download/$Version/kaze-windows-amd64.zip"
+$downloadUrl = "https://github.com/$Repo/releases/latest/download/kaze-windows-amd64.zip"
+if ($Version -ne "latest") {
+    $downloadUrl = "https://github.com/$Repo/releases/download/$Version/kaze-windows-amd64.zip"
 }
 
 # Check for local fallback if installer is run directly inside repo
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$localExe = if ($scriptDir) { Join-Path $scriptDir "kaze.exe" } else { $null }
+$localExe = $null
+if ($scriptDir) {
+    $potentialExe = Join-Path $scriptDir "kaze.exe"
+    if (Test-Path $potentialExe) {
+        $localExe = $potentialExe
+    }
+}
 
-if ($localExe -and (Test-Path $localExe)) {
+if ($localExe) {
     Write-Host "[+] Installing from local build: $localExe..." -ForegroundColor Yellow
     Copy-Item -Path $localExe -Destination $targetExe -Force
 } else {
@@ -69,30 +74,38 @@ if ($localExe -and (Test-Path $localExe)) {
 
 # 3. Add to persistent User PATH
 $userPath = [Environment]::GetEnvironmentVariable("Path", "User")
-if ($userPath -split ';' -notcontains $installDir) {
+$pathParts = @()
+if ($userPath) {
+    $pathParts = $userPath -split ';'
+}
+
+if ($pathParts -notcontains $installDir) {
     Write-Host "[+] Adding $installDir to persistent User PATH..." -ForegroundColor Yellow
-    $newPath = if ($userPath) { "$userPath;$installDir" } else { $installDir }
+    $newPath = $installDir
+    if ($userPath) {
+        $newPath = "$userPath;$installDir"
+    }
     [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
     $env:Path = "$installDir;" + $env:Path
     Write-Host "  -> PATH updated." -ForegroundColor Green
 } else {
-    Write-Host "[✓] $installDir is already in User PATH." -ForegroundColor Green
+    Write-Host "[+] $installDir is already in User PATH." -ForegroundColor Green
 }
 
 # 4. Check for MPV player dependency
 $mpvCmd = Get-Command "mpv" -ErrorAction SilentlyContinue
 if ($mpvCmd) {
-    Write-Host "[✓] mpv video player detected in PATH ($($mpvCmd.Source))." -ForegroundColor Green
+    Write-Host "[+] mpv video player detected in PATH ($($mpvCmd.Source))." -ForegroundColor Green
 } else {
     Write-Host ""
     Write-Host "[!] Note: 'mpv' player was not found in your PATH." -ForegroundColor Magenta
-    Write-Host "    Kaze uses mpv for lightning-fast hardware accelerated playback." -ForegroundColor Gray
+    Write-Host "    Kaze uses mpv for hardware accelerated playback." -ForegroundColor Gray
     Write-Host "    Install it easily using: winget install mpv.net (or scoop install mpv)" -ForegroundColor Yellow
 }
 
 Write-Host ""
 Write-Host "==========================================================" -ForegroundColor Green
-Write-Host "  🎉 KAZE INSTALLED SUCCESSFULLY!" -ForegroundColor Green
+Write-Host "  KAZE INSTALLED SUCCESSFULLY!" -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Green
 Write-Host " Installed at: $targetExe"
 Write-Host ""
