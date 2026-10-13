@@ -155,9 +155,8 @@ Kaze automatically configures mpv with English subtitle matching (`--slang=eng,e
 
 - **Before playback (in the TUI)**:
   - Press `Tab` to switch audio between Japanese (`SUB`) and English (`DUB`).
-  - Press `Shift+J` (or `Ctrl+J`) to toggle subtitles between `[SUBS: ON]` and `[SUBS: OFF]`.
-  - In `SUB` mode: defaults to `[SUBS: ON]`. Toggle off if you prefer untranslated raw audio.
-  - In `DUB` mode: can be toggled on to display subtitles and translated signs/songs alongside English voices.
+  - Press `Shift+J` (or `Ctrl+J`) to toggle subtitles between `[SUBS: ON]` and `[SUBS: OFF]` (default: `OFF`).
+  - Toggle on with `Shift+J` whenever you want English subtitle tracks and signs displayed.
 - **During playback (in mpv)**:
   - Press `j` / `Shift+J` to cycle through available subtitle tracks.
   - Press `v` to toggle subtitle visibility without leaving full screen.
@@ -167,13 +166,13 @@ Kaze automatically configures mpv with English subtitle matching (`--slang=eng,e
 
 | Flag | Shorthand | Description | Default |
 |:---|:---:|:---|:---:|
-| `--sub` | `-s` | Prefer Japanese audio with English subtitles | `true` |
+| `--sub` | `-s` | Prefer Japanese audio | `true` |
 | `--dub` | `-d` | Prefer English dub (filters out unavailable eps) | `false` |
 | `--quality` | `-q` | Video resolution (`auto`, `1080p`, `720p`, `480p`, `360p`, `2k`, `4k`, `off`) | `auto` |
 | `--upscale` | — | Video enhancer shader (`off`, `retro`, `modern`) | `off` |
 | `--episode` | `-e` | Directly play episode number (skips TUI menu) | `0` (TUI mode) |
 | `--trending` | `-t` | Show trending anime from AniList | `false` |
-| `--skip` | — | Automatically skip openings and recaps | `true` |
+| `--skip` | — | Automatically skip openings and recaps | `false` |
 | `--auto-next` | — | Automatically advance to next episode when done | `true` |
 | `--auth` | — | Link AniList account for progress syncing | — |
 | `--setup-shaders` | — | Download anime enhancement shaders locally | `false` |
