@@ -11,6 +11,9 @@ A lightweight anime streaming CLI for your terminal. Resolves streams directly i
 - **Audio Toggle (`Tab`):** Quickly switch between English Subtitles (SUB) and English Dubbed (DUB).
 - **Watch History:** Saves episode progress locally to `~/.kaze/history.json` and prompts you to resume.
 - **Clean Terminal UI:** Built with Bubble Tea; runs mpv quietly in the background so your terminal never scrambles or leaks text.
+- **In-App Self-Updater (`--update`):** Upgrade to the latest release in-place with a single command.
+- **Trending Discovery (`Ctrl+T` / `--trending`):** Browse and stream top seasonal anime directly from AniList without leaving your terminal.
+- **AniList Auto-Tracking (Optional · `kaze auth`):** Completely optional; no account or sign-up needed to browse and stream. If connected, automatically syncs watched episodes to your AniList profile at 85% progress and marks the series completed on the finale.
 
 ---
 
@@ -73,7 +76,46 @@ kaze -dub "<title>"
 
 # Play a specific episode directly
 kaze -e 5 "<title>"
+
+# Browse top trending anime from AniList
+kaze --trending
+
+# (Optional) Connect AniList account for automatic progress tracking
+kaze auth
+
+# Check status and active account
+kaze status
+
+# Disconnect AniList account
+kaze logout
+
+# Check for updates and update in-place
+kaze --update
+
+# Display installed version
+kaze --version
 ```
+
+---
+
+## AniList Auto-Tracking (Optional)
+
+Kaze can automatically update your watched episode counter on your AniList profile when you reach 85% of an episode (or advance via Binge Mode), and mark the series completed on the finale.
+
+### Quick Setup:
+1. Run in your terminal:
+   ```sh
+   kaze auth
+   ```
+2. Open the authorization URL shown in your terminal.
+3. Click **Authorize** on AniList.
+4. Copy the URL from your browser address bar (starts with `...#access_token=...`) and paste it into your terminal prompt.
+   > **Note:** If AniList's background page displays `API route not found`, that is normal. AniList safely places your access token directly in your browser address bar. Kaze automatically extracts and verifies the token.
+
+### Managing Your Account & Logging Out:
+- **Check Status:** `kaze status` (shows connected AniList username).
+- **Log Out:** `kaze logout` (wipes your token from `~/.kaze/config.json` and disables tracking while keeping your local history intact).
+- **Revoke Online:** You can also revoke access anytime directly on AniList at `https://anilist.co/settings/apps`.
 
 ---
 
@@ -85,6 +127,7 @@ kaze -e 5 "<title>"
 | `↑` / `↓` | Navigate titles and episodes |
 | `Enter` | Select anime / Play episode |
 | `Tab` | Switch between SUB and DUB audio |
+| `Ctrl+T` | Toggle between Search and Trending anime |
 | `s` / `Ctrl+S` | Toggle SmartSkip (auto-skip OP/recap) |
 | `n` / `Ctrl+N` | Toggle Binge Mode (auto-play next episode) |
 | `Ctrl+P` | Toggle Provider Mode (AUTO / MANUAL) |
@@ -113,6 +156,12 @@ kaze -e 5 "<title>"
 
 ### Q: Where is my watch history saved?
 **A:** Locally on your own computer in `~/.kaze/history.json`. Nothing is tracked or sent to any remote server. If you reopen an episode you previously started, Kaze will automatically resume from where you left off.
+
+### Q: How does AniList Auto-Tracking work?
+**A:** If you want your watched episodes to sync to your AniList profile, run `kaze auth` once. When you watch an episode past 85% progress (or advance via Binge Mode), Kaze automatically updates your AniList episode counter in the background, and marks the series completed on the finale. This is 100% optional—you can watch and stream completely anonymously without logging in.
+
+### Q: How do I disconnect or remove my AniList account?
+**A:** Run `kaze logout`. This immediately removes your access token from `~/.kaze/config.json` and disables tracking while leaving your local watch history (`history.json`) intact. You can also revoke access anytime from [AniList Authorized Apps](https://anilist.co/settings/apps).
 
 ### Q: Do I need Node.js, Python, or a browser installed?
 **A:** No. Kaze is written in pure Go and compiles into a single native binary. It interacts directly over HTTP/HLS and connects to mpv via IPC. No Chrome, Puppeteer, or runtime environments needed.
