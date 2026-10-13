@@ -1,0 +1,25 @@
+# Binaries & build artifacts
+*.exe
+*.zip
+*.tar.gz
+*.sha256
+dist/
+bin/
+
+# Dependencies & manifests
+node_modules/
+package*.json
+
+# Local scripts (keep only installer scripts)
+*.cmd
+*.js
+*.ps1
+!install.ps1
+*.sh
+!install.sh
+scripts/
+
+# Workspace & internal files
+v1/
+*.md
+!README.md
