@@ -171,6 +171,7 @@ Kaze automatically configures mpv with English subtitle matching (`--slang=eng,e
 | `--quality` | `-q` | Video resolution (`auto`, `1080p`, `720p`, `480p`, `360p`, `2k`, `4k`, `off`) | `auto` |
 | `--upscale` | — | Video enhancer shader (`off`, `retro`, `modern`) | `off` |
 | `--episode` | `-e` | Directly play episode number (skips TUI menu) | `0` (TUI mode) |
+| `--start-over` | `-r` | Play episode from 0:00 (ignore saved history bookmark) | `false` |
 | `--trending` | `-t` | Show trending anime from AniList | `false` |
 | `--skip` | — | Automatically skip openings and recaps | `false` |
 | `--auto-next` | — | Automatically advance to next episode when done | `true` |
@@ -189,6 +190,7 @@ Kaze automatically configures mpv with English subtitle matching (`--slang=eng,e
 |:---|:---|
 | `↑` / `↓` or `j` / `k` | Navigate search results and episode list |
 | `Enter` | Select anime or play episode (auto-resumes from bookmark) |
+| `r` / `R` | Start over highlighted episode from 0:00 (ignore saved bookmark) |
 | `Tab` | Switch between SUB and DUB audio modes |
 | `Shift+J` / `Ctrl+J` | Toggle subtitles on / off (`[SUBS: ON]` / `[SUBS: OFF]`, applies to both SUB and DUB) |
 | `Ctrl+Q` / `q` | Cycle video quality (`auto ➔ 1080p ➔ 720p ➔ 480p ➔ 360p ➔ 2k ➔ 4k ➔ off`) |
