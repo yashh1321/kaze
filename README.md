@@ -2,10 +2,10 @@
   <h1 align="center">kaze (風)</h1>
   <p align="center">Fast, lightweight anime streaming in your terminal with mpv.</p>
   <p align="center">
-    <a href="https://github.com/yashh1321/kaze/releases/latest"><img src="https://img.shields.io/github/v/release/yashh1321/kaze?style=flat-square&color=00ADD8" alt="Release"></a>
+    <a href="https://github.com/yashh1323/kaze/releases/latest"><img src="https://img.shields.io/github/v/release/yashh1323/kaze?style=flat-square&color=00ADD8" alt="Release"></a>
     <a href="https://golang.org"><img src="https://img.shields.io/badge/Go-1.24-00ADD8?style=flat-square&logo=go" alt="Go Version"></a>
-    <a href="https://github.com/yashh1321/kaze/stargazers"><img src="https://img.shields.io/github/stars/yashh1321/kaze?style=flat-square&color=FFD700" alt="Stars"></a>
-    <a href="https://github.com/yashh1321/kaze/releases"><img src="https://img.shields.io/github/downloads/yashh1321/kaze/total?style=flat-square&color=brightgreen" alt="Downloads"></a>
+    <a href="https://github.com/yashh1323/kaze/stargazers"><img src="https://img.shields.io/github/stars/yashh1323/kaze?style=flat-square&color=FFD700" alt="Stars"></a>
+    <a href="https://github.com/yashh1323/kaze/releases"><img src="https://img.shields.io/github/downloads/yashh1323/kaze/total?style=flat-square&color=brightgreen" alt="Downloads"></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>
   </p>
 </p>
@@ -93,24 +93,24 @@ Kaze requires **[mpv](https://mpv.io)** for video playback. Make sure `mpv` is a
 ### Windows (PowerShell)
 
 ```powershell
-irm https://raw.githubusercontent.com/yashh1321/kaze/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/yashh1323/kaze/main/install.ps1 | iex
 ```
 
 ### Linux / macOS (Bash)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/yashh1321/kaze/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | bash
 ```
 
 ### Go Install
 
 ```bash
-go install github.com/yashh1321/kaze/cmd/kaze@latest
+go install github.com/yashh1323/kaze/cmd/kaze@latest
 ```
 
 ### Pre-built Binaries
 
-Download standalone binaries for Windows (`amd64`), Linux (`amd64`), and macOS (`arm64`/`amd64`) directly from [GitHub Releases](https://github.com/yashh1321/kaze/releases/latest).
+Download standalone binaries for Windows (`amd64`), Linux (`amd64`), and macOS (`arm64`/`amd64`) directly from [GitHub Releases](https://github.com/yashh1323/kaze/releases/latest).
 
 ### Updating
 

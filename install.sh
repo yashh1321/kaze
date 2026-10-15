@@ -2,12 +2,12 @@
 # ==============================================================================
 # KAZE (風) - Universal 1-Line Installer for Linux & macOS
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/yashh1321/kaze/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | bash
 # ==============================================================================
 
 set -e
 
-REPO="yashh1321/kaze"
+REPO="yashh1323/kaze"
 BIN_NAME="kaze"
 
 # 1. Detect OS

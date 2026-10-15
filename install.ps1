@@ -1,11 +1,11 @@
 # ==============================================================================
 # KAZE - Universal 1-Line Installer for Windows
-# Run: irm https://github.com/yashh1321/kaze/releases/latest/download/install.ps1 | iex
+# Run: irm https://github.com/yashh1323/kaze/releases/latest/download/install.ps1 | iex
 # ==============================================================================
 
 [CmdletBinding()]
 param(
-    [string]$Repo = "yashh1321/kaze",
+    [string]$Repo = "yashh1323/kaze",
     [string]$Version = "latest"
 )
 
