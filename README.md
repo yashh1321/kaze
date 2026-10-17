@@ -5,9 +5,12 @@
     <a href="https://github.com/yashh1323/kaze/releases/latest"><img src="https://img.shields.io/github/v/release/yashh1323/kaze?style=flat-square&color=00ADD8" alt="Release"></a>
     <a href="https://golang.org"><img src="https://img.shields.io/badge/Go-1.24-00ADD8?style=flat-square&logo=go" alt="Go Version"></a>
     <a href="https://github.com/yashh1323/kaze/stargazers"><img src="https://img.shields.io/github/stars/yashh1323/kaze?style=flat-square&color=FFD700" alt="Stars"></a>
-    <a href="https://github.com/yashh1323/kaze/releases"><img src="https://img.shields.io/github/downloads/yashh1323/kaze/total?style=flat-square&color=brightgreen" alt="Downloads"></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-Freeware-blue?style=flat-square" alt="License"></a>
   </p>
+</p>
+
+<p align="center">
+  <img src="assets/kaze-tui.png" alt="Kaze Interactive Terminal UI" width="900">
 </p>
 
 ---
@@ -100,12 +103,6 @@ irm https://raw.githubusercontent.com/yashh1323/kaze/main/install.ps1 | iex
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | bash
-```
-
-### Go Install
-
-```bash
-go install github.com/yashh1323/kaze/cmd/kaze@latest
 ```
 
 ### Pre-built Binaries
@@ -240,4 +237,4 @@ Kaze does not host or store any media. It acts purely as a terminal client feedi
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is distributed as free-to-use software under the [Kaze Freeware License](LICENSE). Free for personal use. All rights reserved.

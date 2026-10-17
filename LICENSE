@@ -1,21 +1,28 @@
-MIT License
+KAZE FREEWARE END-USER LICENSE AGREEMENT (EULA)
 
-Copyright (c) 2026 Yash (yashh1323)
+Copyright (c) 2026 Yash (yashh1323). All Rights Reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. GRANT OF LICENSE
+Permission is hereby granted to any person obtaining a copy of the Kaze binary executable and associated documentation ("the Software") to download, install, and use the Software free of charge for personal, non-commercial purposes, subject to the terms and conditions set forth herein.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. RESTRICTIONS
+You may not, and you agree not to:
+(a) Decompile, disassemble, reverse engineer, decrypt, or otherwise attempt to derive the source code of the Software.
+(b) Modify, alter, adapt, translate, or create derivative works based upon the Software.
+(c) Sell, rent, lease, sub-license, monetize, or charge any fee for the Software or any portion thereof.
+(d) Remove, obscure, or alter any copyright notices, trademarks, or proprietary legends affixed to or contained within the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. REDISTRIBUTION
+You may redistribute unmodified, official copies of the Software binaries, provided that:
+(a) The Software is distributed in its original, unmodified form without charging any fee.
+(b) This license agreement and copyright notices accompany any copies of the Software.
+(c) No third-party bundle, adware, installer wrappers, or modifications are attached to the Software.
+
+4. OWNERSHIP & INTELLECTUAL PROPERTY
+The Software, its architecture, name, branding, and all intellectual property rights therein remain the exclusive property of Yash (yashh1323). This agreement grants a license to use the Software, not an ownership transfer.
+
+5. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NONINFRINGEMENT. THE AUTHOR DOES NOT WARRANT THAT THE SOFTWARE WILL BE UNINTERRUPTED, SECURE, OR ERROR-FREE.
+
+6. LIMITATION OF LIABILITY
+IN NO EVENT SHALL THE AUTHOR OR COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
