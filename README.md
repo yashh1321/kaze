@@ -39,8 +39,8 @@ Traditional terminal streaming tools often come with platform and environment tr
 - **Python-based clients** require Python runtimes, pip dependencies, virtual environments, and slower cold-start times.
 
 Kaze was built to solve these issues:
-1. **Single binary (~11 MB)**: Cross-compiled native Go. Drop it anywhere in your `PATH` and run.
-2. **Instant startup (<15ms)**: No interpreter startup overhead.
+1. **Single static binary**: Cross-compiled native Go. Drop it anywhere in your `PATH` and run.
+2. **Native execution**: Statically compiled binary with zero interpreter or virtual environment overhead.
 3. **Concurrent multi-source search**: Queries distributed indexers in parallel using non-blocking goroutines. Results stream in as they arrive.
 4. **Automatic failover (`AUTO` mode)**: If a CDN server buffers, fails, or goes down mid-stream, Kaze transparently falls back to an alternate mirror.
 5. **Native Windows support**: Uses Windows Named Pipes (`\\.\pipe\kaze-mpv-*`) for mpv IPC communication rather than Unix socket workarounds.
@@ -52,9 +52,9 @@ Kaze was built to solve these issues:
 
 | Feature | kaze | Shell Scripts | Python CLI Tools |
 |:---|:---:|:---:|:---:|
-| **Language** | **Go (Native)** | POSIX Shell | Python |
-| **Distribution** | **Single binary (~11 MB)** | Multi-file scripts | Package (pip/venv) |
-| **Startup time** | **< 15ms** | ~400ms | ~1.5s - 2.0s |
+| **Runtime** | **Native Go (Static)** | POSIX Shell | CPython VM |
+| **Distribution** | **Single binary** | Multi-file scripts | pip / virtualenv |
+| **Overhead** | **Zero interpreter overhead** | Process forking (`curl/sed/grep`) | Interpreter & package imports |
 | **Dependencies** | `mpv` | `curl, sed, grep, fzf, ffmpeg` | Python, pip, libraries |
 | **Concurrent search** | **Yes (goroutines)** | No (sequential) | No |
 | **Auto CDN failover** | **Yes** | Manual restart | None |
@@ -107,7 +107,7 @@ curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | ba
 
 ### Pre-built Binaries
 
-Download standalone binaries for Windows (`amd64`), Linux (`amd64`), and macOS (`arm64`/`amd64`) directly from [GitHub Releases](https://github.com/yashh1323/kaze/releases/latest).
+Download standalone binaries for Windows (`amd64`), Linux (`amd64`, `arm64`), and macOS (`arm64`, `amd64`) directly from [GitHub Releases](https://github.com/yashh1323/kaze/releases/latest). Every release archive includes cryptographic `SHA256SUMS` verification, `LICENSE`, and `THIRD_PARTY_NOTICES.md`.
 
 ### Updating
 
@@ -235,6 +235,8 @@ Kaze does not host or store any media. It acts purely as a terminal client feedi
 
 ---
 
-## License
+## License & Third-Party Notices
 
-This project is distributed as free-to-use software under the [Kaze Freeware License](LICENSE). Free for personal use. All rights reserved.
+This project is distributed as free-to-use software under the [Kaze Freeware License](LICENSE). Free for personal, non-commercial use. All rights reserved.
+
+Kaze incorporates and links to open-source components under the MIT and BSD licenses. Complete third-party copyright notices and license texts are documented in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# KAZE (風) - Universal 1-Line Installer for Linux & macOS
+# KAZE - Universal Installer for Linux & macOS
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | bash
 # ==============================================================================
 
-set -e
+set -euo pipefail
 
 REPO="yashh1323/kaze"
 BIN_NAME="kaze"
@@ -15,7 +15,7 @@ OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 case "$OS" in
     linux*)  OS="linux" ;;
     darwin*) OS="darwin" ;;
-    *) echo "Unsupported operating system: $OS"; exit 1 ;;
+    *) echo "Error: Unsupported operating system: $OS" >&2; exit 1 ;;
 esac
 
 # 2. Detect CPU Architecture
@@ -23,19 +23,29 @@ ARCH="$(uname -m)"
 case "$ARCH" in
     x86_64|amd64) ARCH="amd64" ;;
     aarch64|arm64) ARCH="arm64" ;;
-    *) echo "Unsupported CPU architecture: $ARCH"; exit 1 ;;
+    *) echo "Error: Unsupported CPU architecture: $ARCH" >&2; exit 1 ;;
 esac
 
 echo ""
 echo "========================================="
-echo "       🍃 KAZE (風) Installer"
+echo "       KAZE (Kaze) Installer"
 echo "========================================="
 echo ""
 
-# 3. Download URL from GitHub Releases
-echo "[1/4] Preparing download for $OS-$ARCH..."
+# 3. Resolve Download URLs (with optional env overrides for testing)
 ASSET_NAME="kaze-$OS-$ARCH.tar.gz"
-DOWNLOAD_URL="https://github.com/$REPO/releases/latest/download/$ASSET_NAME"
+RELEASE_TAG="${KAZE_VERSION:-latest}"
+
+if [ -n "${KAZE_DOWNLOAD_URL:-}" ]; then
+    DOWNLOAD_URL="$KAZE_DOWNLOAD_URL"
+    CHECKSUM_URL="${KAZE_CHECKSUM_URL:-}"
+elif [ "$RELEASE_TAG" = "latest" ]; then
+    DOWNLOAD_URL="https://github.com/$REPO/releases/latest/download/$ASSET_NAME"
+    CHECKSUM_URL="https://github.com/$REPO/releases/latest/download/SHA256SUMS"
+else
+    DOWNLOAD_URL="https://github.com/$REPO/releases/download/$RELEASE_TAG/$ASSET_NAME"
+    CHECKSUM_URL="https://github.com/$REPO/releases/download/$RELEASE_TAG/SHA256SUMS"
+fi
 
 INSTALL_DIR="/usr/local/bin"
 if [ ! -w "$INSTALL_DIR" ]; then
@@ -43,20 +53,66 @@ if [ ! -w "$INSTALL_DIR" ]; then
     mkdir -p "$INSTALL_DIR"
 fi
 
-# 4. Download and Install Binary
-echo "[2/4] Downloading Kaze ($OS-$ARCH)..."
+# 4. Download, Verify Checksum, and Install
+echo "[1/4] Preparing download for $OS-$ARCH..."
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
-if curl -sL --fail "$DOWNLOAD_URL" -o "$TMP_DIR/kaze.tar.gz"; then
-    tar -xzf "$TMP_DIR/kaze.tar.gz" -C "$TMP_DIR"
-    cp "$TMP_DIR/$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
-    chmod +x "$INSTALL_DIR/$BIN_NAME"
-else
-    echo "Error: Failed to download release binary from $DOWNLOAD_URL."
-    echo "Please visit https://github.com/$REPO/releases/latest to verify release availability."
+echo "[2/4] Downloading Kaze ($OS-$ARCH)..."
+if ! curl -sSL --fail "$DOWNLOAD_URL" -o "$TMP_DIR/$ASSET_NAME"; then
+    echo "Error: Failed to download release binary from $DOWNLOAD_URL" >&2
+    echo "Please visit https://github.com/$REPO/releases to verify release availability." >&2
     exit 1
 fi
+
+# Verify SHA256 Checksum (Fail-Closed)
+if [ -n "$CHECKSUM_URL" ]; then
+    echo "[*] Verifying cryptographic checksum (SHA256)..."
+    if curl -sSL --fail "$CHECKSUM_URL" -o "$TMP_DIR/SHA256SUMS"; then
+        EXPECTED_HASH="$(grep -F "$ASSET_NAME" "$TMP_DIR/SHA256SUMS" | awk '{print $1}' || true)"
+        if [ -z "$EXPECTED_HASH" ]; then
+            echo "Error: Asset '$ASSET_NAME' not found in SHA256SUMS file. Aborting." >&2
+            exit 1
+        fi
+
+        if command -v sha256sum >/dev/null 2>&1; then
+            ACTUAL_HASH="$(sha256sum "$TMP_DIR/$ASSET_NAME" | awk '{print $1}')"
+        elif command -v shasum >/dev/null 2>&1; then
+            ACTUAL_HASH="$(shasum -a 256 "$TMP_DIR/$ASSET_NAME" | awk '{print $1}')"
+        else
+            echo "Error: Neither sha256sum nor shasum is available to verify checksum. Aborting." >&2
+            exit 1
+        fi
+
+        if [ "$EXPECTED_HASH" != "$ACTUAL_HASH" ]; then
+            echo "Error: SHA256 verification failed!" >&2
+            echo "  Expected: $EXPECTED_HASH" >&2
+            echo "  Got:      $ACTUAL_HASH" >&2
+            exit 1
+        fi
+        echo "  -> Checksum verified: $ACTUAL_HASH"
+    else
+        echo "Warning: SHA256SUMS not found on release server (legacy release). Proceeding with cautious install." >&2
+    fi
+fi
+
+# Extract and install binary
+tar -xzf "$TMP_DIR/$ASSET_NAME" -C "$TMP_DIR"
+
+if [ -f "$TMP_DIR/$BIN_NAME" ]; then
+    TARGET_BIN="$TMP_DIR/$BIN_NAME"
+else
+    # Fallback search if binary was packed under target name
+    TARGET_BIN="$(find "$TMP_DIR" -maxdepth 2 -type f \( -name "kaze" -o -name "kaze-*" \) ! -name "*.tar.gz" ! -name "*.md" ! -name "LICENSE*" | head -n 1)"
+fi
+
+if [ -z "$TARGET_BIN" ] || [ ! -f "$TARGET_BIN" ]; then
+    echo "Error: Executable binary not found in downloaded archive." >&2
+    exit 1
+fi
+
+cp "$TARGET_BIN" "$INSTALL_DIR/$BIN_NAME"
+chmod +x "$INSTALL_DIR/$BIN_NAME"
 
 echo "[3/4] Installed binary to $INSTALL_DIR/$BIN_NAME"
 
@@ -71,16 +127,16 @@ esac
 echo "[4/4] Verifying dependencies..."
 if ! command -v mpv >/dev/null 2>&1; then
     echo ""
-    echo -e "\033[1;33m[NOTE] MPV video player was not found in your PATH.\033[0m"
+    echo "[NOTE] MPV video player was not found in your PATH."
     if [ "$OS" = "darwin" ]; then
         echo "To install on macOS run: brew install mpv"
     else
         echo "To install on Linux run: sudo apt install mpv (or pacman -S mpv / dnf install mpv)"
     fi
 else
-    echo "✓ mpv player detected: $(command -v mpv)"
+    echo "  -> mpv player detected: $(command -v mpv)"
 fi
 
 echo ""
-echo -e "\033[1;32m🎉 KAZE installed successfully! Run 'kaze' in your terminal.\033[0m"
+echo "KAZE installed successfully! Run 'kaze' in your terminal."
 echo ""

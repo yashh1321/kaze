@@ -74,10 +74,42 @@ if ($localExe) {
     
     $tempZip = Join-Path ([System.IO.Path]::GetTempPath()) "kaze-install-$([System.Guid]::NewGuid()).zip"
     $tempExtract = Join-Path ([System.IO.Path]::GetTempPath()) "kaze-extract-$([System.Guid]::NewGuid())"
+    $tempSums = Join-Path ([System.IO.Path]::GetTempPath()) "kaze-sums-$([System.Guid]::NewGuid()).txt"
     
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-WebRequest -Uri $downloadUrl -OutFile $tempZip -UseBasicParsing
+        
+        # Checksum Verification (Fail-Closed)
+        $checksumUrl = "https://github.com/$Repo/releases/latest/download/SHA256SUMS"
+        if ($Tag -and $Tag -ne "latest") {
+            $checksumUrl = "https://github.com/$Repo/releases/download/$Tag/SHA256SUMS"
+        }
+        
+        Write-Host "[*] Verifying cryptographic checksum (SHA256)..." -ForegroundColor Yellow
+        $hashVerified = $false
+        try {
+            Invoke-WebRequest -Uri $checksumUrl -OutFile $tempSums -UseBasicParsing -TimeoutSec 10
+            if (Test-Path $tempSums) {
+                $sumsContent = Get-Content -Path $tempSums -Raw
+                $actualHash = (Get-FileHash -Path $tempZip -Algorithm SHA256).Hash.ToLower()
+                
+                # Look for line matching kaze-windows-amd64.zip
+                $match = [regex]::Match($sumsContent, "([a-fA-F0-9]{64})\s+.*kaze-windows-amd64\.zip")
+                if ($match.Success) {
+                    $expectedHash = $match.Groups[1].Value.ToLower()
+                    if ($actualHash -ne $expectedHash) {
+                        throw "SHA256 checksum mismatch! Expected: $expectedHash, Got: $actualHash"
+                    }
+                    Write-Host "  -> Checksum verified: $actualHash" -ForegroundColor Green
+                    $hashVerified = $true
+                } else {
+                    throw "Asset 'kaze-windows-amd64.zip' not listed in SHA256SUMS file."
+                }
+            }
+        } catch [System.Net.WebException] {
+            Write-Warning "SHA256SUMS not published for this release (legacy release). Proceeding with cautious install."
+        }
         
         Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
         $extractedExe = Get-ChildItem -Path $tempExtract -Filter "kaze.exe" -Recurse | Select-Object -First 1
@@ -92,11 +124,12 @@ if ($localExe) {
             Install-SafeExecutable $extractedExe.FullName $scoopShim
         }
     } catch {
-        Write-Error "Download failed: $_`nPlease check if the release exists on https://github.com/$Repo/releases."
+        Write-Error "Install failed: $_`nPlease check release on https://github.com/$Repo/releases."
         exit 1
     } finally {
         if (Test-Path $tempZip) { Remove-Item -Force $tempZip -ErrorAction SilentlyContinue }
         if (Test-Path $tempExtract) { Remove-Item -Force -Recurse $tempExtract -ErrorAction SilentlyContinue }
+        if (Test-Path $tempSums) { Remove-Item -Force $tempSums -ErrorAction SilentlyContinue }
     }
 }
 
