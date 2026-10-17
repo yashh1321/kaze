@@ -32,12 +32,14 @@ if ($Version -ne "latest") {
 }
 
 # Check for local fallback if installer is run directly inside repo
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $localExe = $null
-if ($scriptDir) {
-    $potentialExe = Join-Path $scriptDir "kaze.exe"
-    if (Test-Path $potentialExe) {
-        $localExe = $potentialExe
+if ($MyInvocation.MyCommand -and $MyInvocation.MyCommand.Path) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+    if ($scriptDir) {
+        $potentialExe = Join-Path $scriptDir "kaze.exe"
+        if (Test-Path $potentialExe) {
+            $localExe = $potentialExe
+        }
     }
 }
 
