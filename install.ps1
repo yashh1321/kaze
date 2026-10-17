@@ -84,34 +84,28 @@ if ($localExe) {
         
         # Checksum Verification (Fail-Closed)
         $checksumUrl = "https://github.com/$Repo/releases/latest/download/SHA256SUMS"
-        if ($Tag -and $Tag -ne "latest") {
-            $checksumUrl = "https://github.com/$Repo/releases/download/$Tag/SHA256SUMS"
+        if ($Version -and $Version -ne "latest") {
+            $checksumUrl = "https://github.com/$Repo/releases/download/$Version/SHA256SUMS"
         }
         
         Write-Host "[*] Verifying cryptographic checksum (SHA256)..." -ForegroundColor Yellow
-        $hashVerified = $false
-        try {
-            Invoke-WebRequest -Uri $checksumUrl -OutFile $tempSums -UseBasicParsing -TimeoutSec 10
-            if (Test-Path $tempSums) {
-                $sumsContent = Get-Content -Path $tempSums -Raw
-                $actualHash = (Get-FileHash -Path $tempZip -Algorithm SHA256).Hash.ToLower()
-                
-                # Look for line matching kaze-windows-amd64.zip
-                $match = [regex]::Match($sumsContent, "([a-fA-F0-9]{64})\s+.*kaze-windows-amd64\.zip")
-                if ($match.Success) {
-                    $expectedHash = $match.Groups[1].Value.ToLower()
-                    if ($actualHash -ne $expectedHash) {
-                        throw "SHA256 checksum mismatch! Expected: $expectedHash, Got: $actualHash"
-                    }
-                    Write-Host "  -> Checksum verified: $actualHash" -ForegroundColor Green
-                    $hashVerified = $true
-                } else {
-                    throw "Asset 'kaze-windows-amd64.zip' not listed in SHA256SUMS file."
-                }
-            }
-        } catch [System.Net.WebException] {
-            Write-Warning "SHA256SUMS not published for this release (legacy release). Proceeding with cautious install."
+        Invoke-WebRequest -Uri $checksumUrl -OutFile $tempSums -UseBasicParsing -TimeoutSec 15
+        if (-not (Test-Path $tempSums)) {
+            throw "Failed to download SHA256SUMS from $checksumUrl"
         }
+        $sumsContent = Get-Content -Path $tempSums -Raw
+        $actualHash = (Get-FileHash -Path $tempZip -Algorithm SHA256).Hash.ToLower()
+        
+        # Look for line matching kaze-windows-amd64.zip
+        $match = [regex]::Match($sumsContent, "([a-fA-F0-9]{64})\s+.*kaze-windows-amd64\.zip")
+        if (-not $match.Success) {
+            throw "Asset 'kaze-windows-amd64.zip' not listed in SHA256SUMS file."
+        }
+        $expectedHash = $match.Groups[1].Value.ToLower()
+        if ($actualHash -ne $expectedHash) {
+            throw "SHA256 checksum mismatch! Expected: $expectedHash, Got: $actualHash"
+        }
+        Write-Host "  -> Checksum verified: $actualHash" -ForegroundColor Green
         
         Expand-Archive -Path $tempZip -DestinationPath $tempExtract -Force
         $extractedExe = Get-ChildItem -Path $tempExtract -Filter "kaze.exe" -Recurse | Select-Object -First 1

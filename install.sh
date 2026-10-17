@@ -38,7 +38,7 @@ RELEASE_TAG="${KAZE_VERSION:-latest}"
 
 if [ -n "${KAZE_DOWNLOAD_URL:-}" ]; then
     DOWNLOAD_URL="$KAZE_DOWNLOAD_URL"
-    CHECKSUM_URL="${KAZE_CHECKSUM_URL:-}"
+    CHECKSUM_URL="${KAZE_CHECKSUM_URL:-$(dirname "$KAZE_DOWNLOAD_URL")/SHA256SUMS}"
 elif [ "$RELEASE_TAG" = "latest" ]; then
     DOWNLOAD_URL="https://github.com/$REPO/releases/latest/download/$ASSET_NAME"
     CHECKSUM_URL="https://github.com/$REPO/releases/latest/download/SHA256SUMS"
@@ -66,35 +66,29 @@ if ! curl -sSL --fail "$DOWNLOAD_URL" -o "$TMP_DIR/$ASSET_NAME"; then
 fi
 
 # Verify SHA256 Checksum (Fail-Closed)
-if [ -n "$CHECKSUM_URL" ]; then
-    echo "[*] Verifying cryptographic checksum (SHA256)..."
-    if curl -sSL --fail "$CHECKSUM_URL" -o "$TMP_DIR/SHA256SUMS"; then
-        EXPECTED_HASH="$(grep -F "$ASSET_NAME" "$TMP_DIR/SHA256SUMS" | awk '{print $1}' || true)"
-        if [ -z "$EXPECTED_HASH" ]; then
-            echo "Error: Asset '$ASSET_NAME' not found in SHA256SUMS file. Aborting." >&2
-            exit 1
-        fi
-
-        if command -v sha256sum >/dev/null 2>&1; then
-            ACTUAL_HASH="$(sha256sum "$TMP_DIR/$ASSET_NAME" | awk '{print $1}')"
-        elif command -v shasum >/dev/null 2>&1; then
-            ACTUAL_HASH="$(shasum -a 256 "$TMP_DIR/$ASSET_NAME" | awk '{print $1}')"
-        else
-            echo "Error: Neither sha256sum nor shasum is available to verify checksum. Aborting." >&2
-            exit 1
-        fi
-
-        if [ "$EXPECTED_HASH" != "$ACTUAL_HASH" ]; then
-            echo "Error: SHA256 verification failed!" >&2
-            echo "  Expected: $EXPECTED_HASH" >&2
-            echo "  Got:      $ACTUAL_HASH" >&2
-            exit 1
-        fi
-        echo "  -> Checksum verified: $ACTUAL_HASH"
-    else
-        echo "Warning: SHA256SUMS not found on release server (legacy release). Proceeding with cautious install." >&2
-    fi
+echo "[*] Verifying cryptographic checksum (SHA256)..."
+if ! curl -sSL --fail "$CHECKSUM_URL" -o "$TMP_DIR/SHA256SUMS"; then
+    echo "Error: Failed to download checksum manifest from $CHECKSUM_URL. Aborting." >&2
+    exit 1
 fi
+
+# Normalize CRLF line endings to LF
+tr -d '\r' < "$TMP_DIR/SHA256SUMS" > "$TMP_DIR/SHA256SUMS.unix"
+
+if ! grep "[[:space:]]${ASSET_NAME}\$" "$TMP_DIR/SHA256SUMS.unix" > "$TMP_DIR/CHECKSUM_CHECK"; then
+    echo "Error: Asset '$ASSET_NAME' not found in SHA256SUMS manifest. Aborting." >&2
+    exit 1
+fi
+
+if command -v sha256sum >/dev/null 2>&1; then
+    (cd "$TMP_DIR" && sha256sum -c "CHECKSUM_CHECK")
+elif command -v shasum >/dev/null 2>&1; then
+    (cd "$TMP_DIR" && shasum -a 256 -c "CHECKSUM_CHECK")
+else
+    echo "Error: Neither sha256sum nor shasum is available to verify checksum. Aborting." >&2
+    exit 1
+fi
+echo "  -> Checksum verified successfully."
 
 # Extract and install binary
 tar -xzf "$TMP_DIR/$ASSET_NAME" -C "$TMP_DIR"

@@ -12,8 +12,8 @@ Kaze incorporates or links to the third-party open-source components listed belo
 5. [Mattn Runewidth, Isatty, and Localereader](#mattn-packages) (MIT)
 6. [Lucas Beyer Go-Colorful](#lucas-beyer-go-colorful) (MIT)
 7. [Erik Geiser Coninput](#erik-geiser-coninput) (MIT)
-8. [Oliver Kiddle Uniseg](#oliver-kiddle-uniseg) (MIT)
-9. [Kenneth Shaw Terminfo](#kenneth-shaw-terminfo) (MIT)
+8. [Oliver Kuederle Uniseg](#oliver-kuederle-uniseg) (MIT)
+9. [Anmol Sethi Terminfo (xo/terminfo)](#anmol-sethi-terminfo) (MIT)
 10. [Ayman Bagabas Go-OSC52](#ayman-bagabas-go-osc52) (MIT)
 11. [Atotto Clipboard](#atotto-clipboard) (BSD-3-Clause)
 12. [Golang X Packages (sync, sys, text)](#golang-x-packages) (BSD-3-Clause)
@@ -247,16 +247,16 @@ SOFTWARE.
 
 ---
 
-### Oliver Kiddle Uniseg
+### Oliver Kuederle Uniseg
 - **Component:** `github.com/rivo/uniseg`
 - **Project:** https://github.com/rivo/uniseg
 - **License:** MIT
-- **Copyright:** Copyright (c) 2019 Oliver Kiddle.
+- **Copyright:** Copyright (c) 2019 Oliver Kuederle
 
 ```text
 MIT License
 
-Copyright (c) 2019 Oliver Kiddle
+Copyright (c) 2019 Oliver Kuederle
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -279,16 +279,16 @@ SOFTWARE.
 
 ---
 
-### Kenneth Shaw Terminfo
+### Anmol Sethi Terminfo
 - **Component:** `github.com/xo/terminfo`
 - **Project:** https://github.com/xo/terminfo
 - **License:** MIT
-- **Copyright:** Copyright (c) 2020 Kenneth Shaw.
+- **Copyright:** Copyright (c) 2016 Anmol Sethi
 
 ```text
-MIT License
+The MIT License (MIT)
 
-Copyright (c) 2020 Kenneth Shaw
+Copyright (c) 2016 Anmol Sethi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

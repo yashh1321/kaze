@@ -235,8 +235,25 @@ Kaze does not host or store any media. It acts purely as a terminal client feedi
 
 ---
 
-## License & Third-Party Notices
+## Privacy & Network Disclosure
 
-This project is distributed as free-to-use software under the [Kaze Freeware License](LICENSE). Free for personal, non-commercial use. All rights reserved.
+Kaze is designed from the ground up to respect user privacy:
 
-Kaze incorporates and links to open-source components under the MIT and BSD licenses. Complete third-party copyright notices and license texts are documented in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+- **Zero Telemetry & Tracking**: Kaze collects no telemetry, analytics, crash logs, or user fingerprinting. No data is harvested or uploaded.
+- **Local-Only Storage**: Your watch history, bookmarks, and AniList OAuth tokens are stored exclusively on your local disk (`~/.kaze/`) and are never sent to third-party tracking services.
+- **Transparent Network Activity**: Outbound network requests occur solely when initiated by your actions:
+  - Querying indexers for anime search and stream resolution.
+  - Querying AniSkip for opening and ending chapter timestamps.
+  - Streaming selected video feeds directly inside your local `mpv` player.
+  - Querying GitHub Releases over HTTPS when checking for updates (`kaze --update`).
+- **No Background Daemons**: Kaze runs exclusively during your active terminal session and terminates completely upon exit.
+
+---
+
+## License & Source Acquisition
+
+Kaze is 100% free to use for personal purposes — with **no fees, no ads, no paywalls, and no artificial usage limits**.
+
+The software is distributed under the terms of the [Kaze Freeware License](LICENSE). Third-party open-source libraries and shader files retain their respective MIT and BSD licenses as detailed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+**Source Code Acquisition & Enterprise Licensing:** The proprietary Go codebase, concurrent gateway engine, and architecture are available for commercial acquisition, dual-licensing, or enterprise integration. For licensing inquiries, contact: `yashh1323@users.noreply.github.com`.
