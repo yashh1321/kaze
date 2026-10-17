@@ -13,11 +13,13 @@
   <img src="assets/kaze-tui.png" alt="Kaze Interactive Terminal UI" width="900">
 </p>
 
+> **Kaze is 100% free for personal use** — with no fees, no ads, no accounts, and no artificial usage limits.
+
 ---
 
 `kaze` is a standalone terminal anime client and aggregator written in Go. It queries multiple indexers concurrently, deduplicates streams, and pipes video straight into [mpv](https://mpv.io) with automated intro/outro skipping, local history tracking, and anime upscaling shaders.
 
-No Python virtual environments, no node dependencies, no browser automation, and no shell script wrappers. Just a single static binary.
+No Python virtual environments, no node dependencies, no browser automation, and no shell script wrappers. Just a self-contained, statically-linked single Go binary requiring only [mpv](https://mpv.io) on your system.
 
 ```bash
 # Search and open interactive TUI
@@ -250,10 +252,8 @@ Kaze is designed from the ground up to respect user privacy:
 
 ---
 
-## License & Source Acquisition
+## License & Commercial Inquiries
 
-Kaze is 100% free to use for personal purposes — with **no fees, no ads, no paywalls, and no artificial usage limits**.
+Kaze is distributed under the terms of the [Kaze Freeware License](LICENSE). It is free to download and use for personal purposes with **no fees, no ads, no accounts, and no artificial usage limits**. Third-party open-source libraries and shader files retain their respective MIT and BSD licenses as detailed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-The software is distributed under the terms of the [Kaze Freeware License](LICENSE). Third-party open-source libraries and shader files retain their respective MIT and BSD licenses as detailed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
-**Source Code Acquisition & Enterprise Licensing:** The proprietary Go codebase, concurrent gateway engine, and architecture are available for commercial acquisition, dual-licensing, or enterprise integration. For licensing inquiries, contact: `yashh1323@users.noreply.github.com`.
+**Source Code Acquisition & Enterprise Licensing:** The proprietary Go codebase, concurrent gateway engine, and architecture are available for commercial acquisition, dual-licensing, or enterprise integration. For licensing inquiries, contact: `ggg247043@gmail.com`.
