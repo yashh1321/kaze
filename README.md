@@ -111,6 +111,13 @@ curl -fsSL https://raw.githubusercontent.com/yashh1323/kaze/main/install.sh | ba
 
 Download standalone binaries for Windows (`amd64`), Linux (`amd64`, `arm64`), and macOS (`arm64`, `amd64`) directly from [GitHub Releases](https://github.com/yashh1323/kaze/releases/latest). Every release archive includes cryptographic `SHA256SUMS` verification, `LICENSE`, and `THIRD_PARTY_NOTICES.md`.
 
+### Package Managers
+
+Installation manifests and community recipes are maintained in the [`packaging/`](packaging/) directory:
+- **Scoop (Windows)**: [`packaging/scoop/kaze.json`](packaging/scoop/kaze.json)
+- **Homebrew (macOS / Linux)**: [`packaging/homebrew/kaze.rb`](packaging/homebrew/kaze.rb)
+- **AUR (Arch Linux)**: [`packaging/aur/PKGBUILD`](packaging/aur/PKGBUILD)
+
 ### Updating
 
 To update your existing installation to the latest release in-place:

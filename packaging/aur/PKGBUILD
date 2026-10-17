@@ -1,0 +1,23 @@
+# Maintainer: Yash <ggg247043@gmail.com>
+pkgname=kaze-bin
+pkgver=4.3.0
+pkgrel=1
+pkgdesc="Lightweight terminal anime client and media player controller with mpv"
+arch=('x86_64' 'aarch64')
+url="https://github.com/yashh1323/kaze"
+license=('custom:Freeware')
+depends=('mpv')
+provides=('kaze')
+conflicts=('kaze')
+
+source_x86_64=("https://github.com/yashh1323/kaze/releases/download/v${pkgver}/kaze-linux-amd64.tar.gz")
+sha256sums_x86_64=('f1e6d7fc7d14fb9b76f6c592eaeff542cda038d09d6cc7b1f544a048115da58a')
+
+source_aarch64=("https://github.com/yashh1323/kaze/releases/download/v${pkgver}/kaze-linux-arm64.tar.gz")
+sha256sums_aarch64=('07b774b3fdc0fbe1c9da3629cf8121f2ba7f8b3259e49f888d811edf80a6661e')
+
+package() {
+    install -Dm755 "${srcdir}/kaze" "${pkgdir}/usr/bin/kaze"
+    install -Dm644 "${srcdir}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+    install -Dm644 "${srcdir}/THIRD_PARTY_NOTICES.md" "${pkgdir}/usr/share/doc/${pkgname}/THIRD_PARTY_NOTICES.md"
+}

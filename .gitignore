@@ -21,6 +21,6 @@ scripts/
 
 # Workspace & internal files
 v1/
-*.md
-!README.md
-!THIRD_PARTY_NOTICES.md
+/*.md
+!/README.md
+!/THIRD_PARTY_NOTICES.md
